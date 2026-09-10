@@ -47,7 +47,6 @@ export default defineConfig({
             'bootstrap/ssr/**',
             'tailwind.config.js',
             'resources/js/actions/**',
-            'resources/js/components/ui/*',
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
         ],
@@ -66,11 +65,10 @@ export default defineConfig({
         ignorePatterns: [
             '.github/**',
             'composer.json',
-            'resources/js/components/ui/*',
             'resources/views/mail/*',
         ],
         sortTailwindcss: {
-            functions: ['clsx', 'cn', 'cva'],
+            functions: ['clsx', 'cn'],
             entryPoint: 'resources/css/app.css',
         },
     },
