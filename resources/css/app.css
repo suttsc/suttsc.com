@@ -8,4 +8,53 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    --font-mono:
+        ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', 'Liberation Mono',
+        monospace;
+}
+
+@theme inline {
+    --color-screen: var(--screen);
+    --color-panel: var(--panel);
+    --color-line: var(--line);
+    --color-ink: var(--ink);
+    --color-dim: var(--dim);
+    --color-glow: var(--glow);
+}
+
+:root,
+[data-theme='amber'] {
+    --screen: #14100a;
+    --panel: #1d170e;
+    --line: #3a2e19;
+    --ink: #ffb000;
+    --dim: #b38626;
+    --glow: #ffd166;
+}
+
+[data-theme='green'] {
+    --screen: #07120a;
+    --panel: #0c1b10;
+    --line: #1c3a24;
+    --ink: #33ff66;
+    --dim: #25a84c;
+    --glow: #9dffb5;
+}
+
+[data-theme='blue'] {
+    --screen: #0a0f17;
+    --panel: #101826;
+    --line: #22324a;
+    --ink: #9cc9ff;
+    --dim: #6c8fb8;
+    --glow: #e0f0ff;
+}
+
+[data-theme='ember'] {
+    --screen: #150b09;
+    --panel: #1f100d;
+    --line: #40201a;
+    --ink: #ff6b4a;
+    --dim: #c4614f;
+    --glow: #ffb199;
 }

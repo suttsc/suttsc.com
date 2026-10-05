@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\Theme;
+use App\Terminal\CommandRegistry;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -15,6 +17,10 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    public function __construct(
+        private readonly CommandRegistry $registry,
+    ) {}
 
     /**
      * Determines the current asset version.
@@ -38,6 +44,9 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'commands' => $this->registry->manifest(),
+            'theme' => Theme::current($request->session())->value,
+            'ownerTimezone' => config('site.timezone'),
         ];
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Terminal\CommandRegistry;
 use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Fortify::ignoreRoutes();
         Passkeys::ignoreRoutes();
+
+        $this->app->singleton(CommandRegistry::class, fn (Application $app): CommandRegistry => new CommandRegistry(
+            $app,
+            app_path('Terminal/Commands'),
+            'App\\Terminal\\Commands',
+        ));
     }
 
     /**
