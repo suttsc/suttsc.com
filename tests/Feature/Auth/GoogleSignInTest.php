@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Auth\Owner;
 use App\Enums\SiteStatKey;
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\SiteStat;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -33,7 +34,10 @@ it('hands the visitor to google', function () {
 it('tells inertia to leave the app for google', function () {
     Socialite::fake('google');
 
-    $this->get(route('auth.google.redirect'), ['X-Inertia' => 'true'])
+    $this->get(route('auth.google.redirect'), [
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => (string) app(HandleInertiaRequests::class)->version(request()),
+    ])
         ->assertStatus(409)
         ->assertHeader('X-Inertia-Location', 'https://socialite.fake/google/authorize');
 });
