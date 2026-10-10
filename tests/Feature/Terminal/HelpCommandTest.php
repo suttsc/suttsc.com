@@ -25,8 +25,10 @@ it('appears in the manifest', function () {
 
 it('lists every command in the manifest, itself included', function () {
     $this->postJson(route('terminal.run'), ['command' => '/help'])
-        ->assertJsonPath('items.*.run', ['/about', '/help', '/theme', '/uptime'])
-        ->assertJsonPath('items.1', [
+        ->assertJsonPath('items.*.run', [
+            '/about', '/blog', '/help', '/hire', '/links', '/projects', '/strava', '/sudo', '/theme', '/uptime', '/whoami',
+        ])
+        ->assertJsonPath('items.2', [
             'label' => '/help',
             'hint' => 'Everything this machine admits to',
             'run' => '/help',

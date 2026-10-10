@@ -2,9 +2,16 @@
 
 namespace App\Providers;
 
+use App\Auth\OwnerUserProvider;
+use App\Integrations\PageTitle\HttpPageTitleFetcher;
+use App\Integrations\PageTitle\PageTitleFetcher;
+use App\Integrations\Strava\HttpStravaClient;
+use App\Integrations\Strava\StravaClient;
 use App\Terminal\CommandRegistry;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Client\Factory as HttpFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +33,16 @@ class AppServiceProvider extends ServiceProvider
             app_path('Terminal/Commands'),
             'App\\Terminal\\Commands',
         ));
+
+        $this->app->bind(PageTitleFetcher::class, HttpPageTitleFetcher::class);
+
+        $this->app->bind(StravaClient::class, fn (Application $app): StravaClient => new HttpStravaClient(
+            $app->make(HttpFactory::class),
+            $app->make('cache.store'),
+            config()->string('services.strava.client_id'),
+            config()->string('services.strava.client_secret'),
+            config()->string('services.strava.refresh_token'),
+        ));
     }
 
     /**
@@ -34,6 +51,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        Auth::provider('owner', fn (): OwnerUserProvider => new OwnerUserProvider);
     }
 
     /**

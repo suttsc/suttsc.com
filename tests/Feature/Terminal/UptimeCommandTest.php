@@ -47,3 +47,10 @@ it('renders at a real url', function () {
             ->where('signature', '/uptime')
             ->where('output.type', 'inline'));
 });
+
+it('counts the failed impersonations', function () {
+    SiteStat::factory()->create(['key' => SiteStatKey::NiceTryCount, 'value' => 3]);
+
+    $this->postJson(route('terminal.run'), ['command' => '/uptime'])
+        ->assertJsonPath('lines.3', 'impersonation attempts     3');
+});
