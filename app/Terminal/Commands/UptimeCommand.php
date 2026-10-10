@@ -31,6 +31,7 @@ final class UptimeCommand extends BaseCommand
             sprintf('domain registered          %d days ago', $this->stats->domainAgeInDays()),
             sprintf('deploys so far             %d', $this->stats->deployCount()),
             'blog posts written         0',
+            sprintf('impersonation attempts     %d', $this->stats->niceTryCount()),
             'consecutive days without',
             '  touching the CSS         0',
         ]);

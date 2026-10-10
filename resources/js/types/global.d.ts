@@ -9,6 +9,11 @@ declare module '@inertiajs/core' {
             ownerTimezone: string;
             [key: string]: unknown;
         };
+        flashDataType: {
+            /** A failed sign-in, shown to its owner once and then forgotten. */
+            rejection?: { name: string | null; email: string | null };
+            signedIn?: boolean;
+        };
     }
 }
 

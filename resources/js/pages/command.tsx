@@ -1,11 +1,12 @@
 import { Head } from '@inertiajs/react';
 import InlineLines from '@/Shell/inline-lines';
 import { useShell } from '@/Shell/shell-context';
-import type { InlineOutput, MenuOutput } from '@/types/terminal';
+import type { InlineOutput, MenuOutput, WindowOutput } from '@/types/terminal';
+import WindowBody from '@/Windows/window-body';
 
 type CommandProps = {
     signature: string;
-    output: InlineOutput | MenuOutput;
+    output: InlineOutput | MenuOutput | WindowOutput;
 };
 
 export default function Command({ signature, output }: CommandProps) {
@@ -19,6 +20,13 @@ export default function Command({ signature, output }: CommandProps) {
 
                 {output.type === 'inline' && (
                     <InlineLines lines={output.lines} />
+                )}
+
+                {output.type === 'window' && (
+                    <WindowBody
+                        component={output.component}
+                        props={output.props}
+                    />
                 )}
 
                 {output.type === 'menu' && (

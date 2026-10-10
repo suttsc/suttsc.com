@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import type { ReactNode } from 'react';
+import Desktop from '@/Shell/desktop';
 import Palette from '@/Shell/palette';
 import ShellProvider from '@/Shell/shell-provider';
 import Taskbar from '@/Shell/taskbar';
@@ -16,6 +17,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     return (
         <ShellProvider>
             <div className="min-h-screen pb-10">{children}</div>
+            <Desktop />
             <Palette />
             <Taskbar />
         </ShellProvider>

@@ -58,3 +58,14 @@
     --dim: #c4614f;
     --glow: #ffb199;
 }
+
+@theme {
+    --animate-pop: pop 160ms ease-out;
+
+    @keyframes pop {
+        from {
+            opacity: 0;
+            transform: translateY(-6px) scale(0.99);
+        }
+    }
+}

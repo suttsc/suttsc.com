@@ -7,8 +7,6 @@ import { hasArguments, matchCommands } from '@/Shell/match-commands';
 import { useShell } from '@/Shell/shell-context';
 import type { MenuItem } from '@/types/terminal';
 
-const NO_RESULTS = 'Nothing. suttsc has failed you.';
-
 function isEditable(target: EventTarget | null): boolean {
     return (
         target instanceof HTMLElement &&
@@ -18,7 +16,9 @@ function isEditable(target: EventTarget | null): boolean {
 }
 
 export default function Palette() {
-    const { commands } = usePage().props;
+    const page = usePage();
+    const { commands } = page.props;
+    const { rejection, signedIn } = page.flash;
     const shell = useShell();
     const [query, setQuery] = useState('');
     const [selected, setSelected] = useState(0);
@@ -32,18 +32,30 @@ export default function Palette() {
     const inline =
         typed === '' && shell.output?.type === 'inline' ? shell.output : null;
 
-    // One listbox serves both jobs: matching commands while typing, menu items otherwise.
-    const options: MenuItem[] =
+    const matches =
         typed !== ''
             ? matchCommands(commands, typed).map((command) => ({
                   label: command.signature,
                   hint: command.description,
                   run: command.signature,
               }))
-            : (menu?.items ?? []);
+            : [];
+
+    // One listbox serves three jobs: matching commands, menu items, and asking when nothing matches.
+    const options: MenuItem[] =
+        typed === ''
+            ? (menu?.items ?? [])
+            : matches.length > 0
+              ? matches
+              : [
+                    {
+                        label: 'Ask',
+                        hint: `“${typed}”`,
+                        run: `/ask ${typed.replace(/^\/+/, '')}`,
+                    },
+                ];
 
     const hasOptions = options.length > 0;
-    const noResults = typed !== '' && !hasOptions;
     const activeIndex = Math.min(selected, options.length - 1);
     const activeOption: MenuItem | undefined = options[activeIndex];
     const optionId = (index: number) => `${listboxId}-option-${index}`;
@@ -126,7 +138,7 @@ export default function Palette() {
                 return;
             case 'Tab': {
                 const completion =
-                    typed !== '' && activeOption
+                    matches.length > 0 && activeOption
                         ? `${activeOption.run} `
                         : null;
 
@@ -172,7 +184,7 @@ export default function Palette() {
         <div
             className={cn(
                 'fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-[22vh]',
-                shell.open && 'bg-screen/85 bottom-0',
+                shell.open && 'bg-screen/85 bottom-0 z-[1000]',
             )}
             onMouseDown={(event) => {
                 if (shell.open && event.target === event.currentTarget) {
@@ -189,7 +201,19 @@ export default function Palette() {
                 })}
             >
                 {shell.isHome && (
-                    <h1 className="text-dim mb-4">Welcome back, suttsc.</h1>
+                    <div className="mb-4">
+                        <h1 className="text-dim">
+                            Welcome back, suttsc.
+                            {signedIn && " (This time it's true.)"}
+                        </h1>
+                        {rejection && (
+                            <p role="alert" className="text-glow pt-2">
+                                {rejection.name ?? 'Someone'}
+                                {rejection.email && ` <${rejection.email}>`}.
+                                You are not suttsc. This has been counted.
+                            </p>
+                        )}
+                    </div>
                 )}
 
                 <div className="border-line bg-panel rounded-md border shadow-lg shadow-black/40">
@@ -260,7 +284,6 @@ export default function Palette() {
                         role="status"
                         className="border-line border-t px-4 py-3 empty:hidden"
                     >
-                        {noResults && <p>{NO_RESULTS}</p>}
                         {inline && <InlineLines lines={inline.lines} />}
                     </div>
                 </div>
