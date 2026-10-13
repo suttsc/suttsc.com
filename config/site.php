@@ -56,4 +56,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Tool Links
+    |--------------------------------------------------------------------------
+    |
+    | Desktop icons on /tools that are plain links rather than windows. Each
+    | needs a label, description, glyph and url. Window tools live in the
+    | App\Enums\Tool enum, since they need a React component.
+    |
+    */
+
+    'tool_links' => [],
+
 ];

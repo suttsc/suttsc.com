@@ -10,8 +10,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     const { theme } = usePage().props;
 
     // The root element is rendered by Blade, so it only hears about a new theme from here.
+    // Cookieless pages send no theme, so whatever is already on screen stays.
     useEffect(() => {
-        document.documentElement.dataset.theme = theme;
+        if (theme !== null) {
+            document.documentElement.dataset.theme = theme;
+        }
     }, [theme]);
 
     return (

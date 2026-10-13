@@ -60,3 +60,13 @@ export type Project = {
     stack: string;
     url: string | null;
 };
+
+export type ToolEntry = {
+    slug: string;
+    label: string;
+    description: string;
+    glyph: string;
+    href: string | null;
+    component: string | null;
+    url: string;
+};

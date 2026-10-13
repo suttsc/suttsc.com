@@ -67,7 +67,11 @@ export default function ShellProvider({ children }: { children: ReactNode }) {
         }
     }
 
-    function openWindow({ title, component, props }: WindowOutput) {
+    function openWindow({
+        title,
+        component,
+        props,
+    }: Omit<WindowOutput, 'type'>) {
         const id = nextWindowId.current++;
         const layer = nextLayer.current++;
 
@@ -133,6 +137,7 @@ export default function ShellProvider({ children }: { children: ReactNode }) {
                 busy: http.processing,
                 windows,
                 run,
+                openWindow,
                 summon,
                 dismiss,
                 clear: () => setOutput(null),

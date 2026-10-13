@@ -45,7 +45,8 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'commands' => $this->registry->manifest(),
-            'theme' => Theme::current($request->session())->value,
+            // Cookieless pages have no session to read a theme from; the client keeps the one it has.
+            'theme' => $request->hasSession() ? Theme::current($request->session())->value : null,
             'ownerTimezone' => config('site.timezone'),
         ];
     }

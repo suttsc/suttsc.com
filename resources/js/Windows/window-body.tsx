@@ -5,6 +5,9 @@ import type { LinkWindowProps } from '@/Windows/link';
 import LinkAddWindow from '@/Windows/link-add';
 import type { LinkAddWindowProps } from '@/Windows/link-add';
 import StravaWindow from '@/Windows/strava';
+import Base64Tool from '@/Windows/tools/base64';
+import JwtTool from '@/Windows/tools/jwt';
+import TimestampTool from '@/Windows/tools/timestamp';
 import type { StravaWindowProps } from '@/Windows/strava';
 import WhoamiWindow from '@/Windows/whoami';
 
@@ -32,6 +35,12 @@ export default function WindowBody({ component, props }: WindowBodyProps) {
                     {...(props as IncidentReportWindowProps)}
                 />
             );
+        case 'tool-base64':
+            return <Base64Tool />;
+        case 'tool-jwt':
+            return <JwtTool />;
+        case 'tool-timestamp':
+            return <TimestampTool />;
         default:
             return <p className="text-dim">This window has nothing in it.</p>;
     }

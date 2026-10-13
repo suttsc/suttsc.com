@@ -17,6 +17,8 @@ export type Shell = {
     /** Open windows, in the order they were opened. */
     windows: OpenWindow[];
     run: (command: string) => void;
+    /** Open a window without asking the server, for things that already know what to show. */
+    openWindow: (window: Omit<WindowOutput, 'type'>) => void;
     summon: () => void;
     dismiss: () => void;
     clear: () => void;

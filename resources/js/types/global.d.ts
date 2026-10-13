@@ -5,7 +5,7 @@ declare module '@inertiajs/core' {
         sharedPageProps: {
             name: string;
             commands: CommandManifestEntry[];
-            theme: Theme;
+            theme: Theme | null;
             ownerTimezone: string;
             [key: string]: unknown;
         };
